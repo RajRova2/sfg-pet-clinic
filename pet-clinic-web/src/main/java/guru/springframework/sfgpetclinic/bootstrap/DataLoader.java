@@ -1,6 +1,7 @@
 package guru.springframework.sfgpetclinic.bootstrap;
 
 import guru.springframework.sfgpetclinic.model.*;
+import guru.springframework.sfgpetclinic.repositories.VisitRepository;
 import guru.springframework.sfgpetclinic.services.OwnerService;
 import guru.springframework.sfgpetclinic.services.PetTypeService;
 import guru.springframework.sfgpetclinic.services.SpecialtyService;
@@ -17,12 +18,14 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
+    private final VisitRepository visitRepository;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtyService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtyService, VisitRepository visitRepository) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialtyService = specialtyService;
+        this.visitRepository = visitRepository;
     }
 
     @Override
@@ -75,9 +78,9 @@ public class DataLoader implements CommandLineRunner {
         Owner owner2 = new Owner();
         owner2.setFirstName("Fiona");
         owner2.setLastName("Glenanne");
-        owner1.setAddress("123 Brikerel");
-        owner1.setCity("Miami");
-        owner1.setTelephone("1231231234");
+        owner2.setAddress("123 Brikerel");
+        owner2.setCity("Miami");
+        owner2.setTelephone("1231231234");
 
         Pet fionasCat = new Pet();
         fionasCat.setName("Just Cat");
@@ -87,6 +90,11 @@ public class DataLoader implements CommandLineRunner {
         owner2.getPets().add(fionasCat);
 
         ownerService.save(owner2);
+
+        Visit catVisit = new Visit();
+        catVisit.setPet(fionasCat);
+        catVisit.setDate(LocalDate.now());
+        catVisit.setDescription("Sneezy kitty");
 
         System.out.println("Loaded Owners....");
 
